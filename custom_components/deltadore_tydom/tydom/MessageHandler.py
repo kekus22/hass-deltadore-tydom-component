@@ -28,6 +28,7 @@ from .tydom_devices import (
     TydomWeather,
     TydomWater,
     TydomThermo,
+    TydomSwitch,
 )
 
 if TYPE_CHECKING:
@@ -252,6 +253,8 @@ class MessageHandler:
             | None
         ) = None
 
+        LOGGER.warn("data : %s", data)
+        LOGGER.warn("content_type : %s", content_type)
         if data:
             if content_type == "application/json":
                 # Content-Type is not reliable; it is use with text/html for example
@@ -260,6 +263,7 @@ class MessageHandler:
             elif content_type == "text/html":
                 msg_type = partial(no_op, "msg_html")
 
+        LOGGER.warn("msg_type : %s", msg_type)
         if msg_type is None:
             msg_type = MSG_MAPPING.get(uri_origin)
 
@@ -269,6 +273,7 @@ class MessageHandler:
                     msg_type = partial(no_op, "msg_html")
                 elif b"id" in first:
                     msg_type = self.parse_devices_data
+            LOGGER.warn("msg_type2 : %s", msg_type)
 
         if msg_type is None:
             LOGGER.warning("Unknown message type received %s: %s", uri_origin, data)
@@ -469,6 +474,17 @@ class MessageHandler:
                 )
             case "sensorThermo":
                 return TydomThermo(
+                    tydom_client,
+                    uid,
+                    device_id,
+                    name,
+                    last_usage,
+                    endpoint,
+                    device_metadata[uid],
+                    data,
+                )
+            case "plug":
+                return TydomSwitch(
                     tydom_client,
                     uid,
                     device_id,
