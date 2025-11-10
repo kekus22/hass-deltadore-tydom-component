@@ -1424,10 +1424,8 @@ class HaSwitch(SwitchEntity, HAEntity):
     def is_on(self):
         """Return true if light is on."""
         if(self._device.plugCmd == "ON"):
-            LOGGER.debug("msg_type : %s", self._device.plugCmd)
             return True
         else:
-            LOGGER.debug("msg_type : %s", self._device.plugCmd)
             return False
 
     @property
