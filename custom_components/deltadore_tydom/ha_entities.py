@@ -70,7 +70,6 @@ from homeassistant.components.weather import (
 
 from homeassistant.components.switch import (
     SwitchEntity,
-    SwitchDeviceClass,
 )
 
 from .tydom.tydom_devices import (
@@ -1388,6 +1387,7 @@ class HaThermo(SensorEntity, HAEntity):
 
 
 class HaSwitch(SwitchEntity, HAEntity):
+    """Representation of a switch."""
 
     sensor_classes = {
         "energyInstantTotElecP": SensorDeviceClass.POWER,
@@ -1413,17 +1413,17 @@ class HaSwitch(SwitchEntity, HAEntity):
         self._registered_sensors = []
 
     async def async_turn_on(self, **kwargs):
-        """Open the cover."""
+        """Open the switch."""
         await self._device.turn_on()
 
     async def async_turn_off(self, **kwargs):
-        """Open the cover."""
+        """Open the switch."""
         await self._device.turn_off()
 
     @property
     def is_on(self):
-        """Return true if light is on."""
-        if(self._device.plugCmd == "ON"):
+        """Return true if switch is on."""
+        if self._device.plugCmd == "ON":
             return True
         else:
             return False
