@@ -1449,16 +1449,3 @@ class HaRemote(SensorEntity, HAEntity):
         self._attr_unique_id = f"{self._device.device_id}"
         self._attr_name = self._device.device_name
         self._registered_sensors = []
-
-    @property
-    def state(self):
-        """Return action."""
-        return self._device.action
-
-    @property
-    def device_info(self):
-        """Return information to link this entity with the correct device."""
-        return {
-            "identifiers": {(DOMAIN, self._device.device_id)},
-            "name": self._device.device_name,
-        }
