@@ -89,6 +89,7 @@ from .tydom.tydom_devices import (
     TydomWater,
     TydomThermo,
     TydomSwitch,
+    TydomRemote,
 )
 
 from .const import DOMAIN, LOGGER
@@ -1427,6 +1428,32 @@ class HaSwitch(SwitchEntity, HAEntity):
             return True
         else:
             return False
+
+    @property
+    def device_info(self):
+        """Return information to link this entity with the correct device."""
+        return {
+            "identifiers": {(DOMAIN, self._device.device_id)},
+            "name": self._device.device_name,
+        }
+
+
+class HaRemote(SensorEntity, HAEntity):
+    """Representation of a remote."""
+
+    def __init__(self, device: TydomRemote, hass) -> None:
+        """Initialize TydomRemote."""
+        self.hass = hass
+        self._device = device
+        self._device._ha_device = self
+        self._attr_unique_id = f"{self._device.device_id}"
+        self._attr_name = self._device.device_name
+        self._registered_sensors = []
+
+    @property
+    def state(self):
+        """Return action."""
+        return self._device.action
 
     @property
     def device_info(self):

@@ -24,6 +24,7 @@ from .tydom.tydom_devices import (
     TydomWater,
     TydomThermo,
     TydomSwitch,
+    TydomRemote,
 )
 from .ha_entities import (
     HATydom,
@@ -41,6 +42,7 @@ from .ha_entities import (
     HaMoisture,
     HaThermo,
     HaSwitch,
+    HaRemote,
 )
 
 from .const import LOGGER
@@ -360,6 +362,15 @@ class Hub:
                 self.ha_devices[device.device_id] = ha_device
                 if self.add_switch_callback is not None:
                     self.add_switch_callback([ha_device])
+
+                if self.add_sensor_callback is not None:
+                    self.add_sensor_callback(ha_device.get_sensors())
+            case TydomRemote():
+                LOGGER.debug("Create remote %s", device.device_id)
+                ha_device = HaRemote(device, self._hass)
+                self.ha_devices[device.device_id] = ha_device
+                if self.add_sensor_callback is not None:
+                    self.add_sensor_callback([ha_device])
 
                 if self.add_sensor_callback is not None:
                     self.add_sensor_callback(ha_device.get_sensors())

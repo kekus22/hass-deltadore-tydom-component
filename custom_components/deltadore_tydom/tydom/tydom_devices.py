@@ -516,3 +516,7 @@ class TydomSwitch(TydomDevice):
         await self._tydom_client.put_devices_data(
             self._id, self._endpoint, "plugCmd", "OFF"
         )
+
+
+class TydomRemote(TydomDevice):
+    """Represents a remote."""
