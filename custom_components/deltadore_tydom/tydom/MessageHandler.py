@@ -492,7 +492,7 @@ class MessageHandler:
                     data,
                 )
             case "remoteControl":
-                return TydomSwitch(
+                return TydomRemote(
                     tydom_client,
                     uid,
                     device_id,
