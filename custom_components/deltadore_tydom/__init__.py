@@ -30,16 +30,12 @@ PLATFORMS: list[str] = [
     Platform.ALARM_CONTROL_PANEL,
     Platform.WEATHER,
     Platform.BINARY_SENSOR,
-<<<<<<< HEAD
-    Platform.SWITCH,
-=======
     Platform.SCENE,
     Platform.SWITCH,
     Platform.BUTTON,
     Platform.NUMBER,
     Platform.SELECT,
     Platform.EVENT,
->>>>>>> 64a9dbc881ebe1299fe5b794bd1de2ebfe34685c
 ]
 
 

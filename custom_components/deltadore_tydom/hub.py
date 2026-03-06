@@ -23,14 +23,9 @@ from .tydom.tydom_devices import (
     TydomWeather,
     TydomWater,
     TydomThermo,
-<<<<<<< HEAD
-    TydomSwitch,
-    TydomRemote,
-=======
     TydomDevice,
     TydomScene,
     TydomPlug,
->>>>>>> 64a9dbc881ebe1299fe5b794bd1de2ebfe34685c
 )
 from .ha_entities import (
     HATydom,
@@ -47,15 +42,10 @@ from .ha_entities import (
     HaWeather,
     HaMoisture,
     HaThermo,
-<<<<<<< HEAD
-    HaSwitch,
-    HaRemote,
-=======
     HASensor,
     HAScene,
     HASwitch,
     HaPlug,
->>>>>>> 64a9dbc881ebe1299fe5b794bd1de2ebfe34685c
 )
 
 from .const import LOGGER
@@ -107,16 +97,12 @@ class Hub:
         self.add_update_callback = None
         self.add_weather_callback = None
         self.add_binary_sensor_callback = None
-<<<<<<< HEAD
-        self.add_switch_callback = None
-=======
         self.add_scene_callback = None
         self.add_switch_callback = None
         self.add_button_callback = None
         self.add_number_callback = None
         self.add_select_callback = None
         self.add_event_callback = None
->>>>>>> 64a9dbc881ebe1299fe5b794bd1de2ebfe34685c
 
         self._tydom_client = TydomClient(
             hass=self._hass,
@@ -179,16 +165,12 @@ class Hub:
             and self.add_update_callback is not None
             and self.add_alarm_callback is not None
             and self.add_weather_callback is not None
-<<<<<<< HEAD
-            and self.add_switch_callback is not None
-=======
             and self.add_scene_callback is not None
             and self.add_switch_callback is not None
             and self.add_button_callback is not None
             and self.add_number_callback is not None
             and self.add_select_callback is not None
             and self.add_event_callback is not None
->>>>>>> 64a9dbc881ebe1299fe5b794bd1de2ebfe34685c
         )
 
     async def setup(self, connection: ClientWebSocketResponse) -> None:
@@ -405,11 +387,6 @@ class Hub:
 
                 if self.add_sensor_callback is not None:
                     self.add_sensor_callback(ha_device.get_sensors())
-<<<<<<< HEAD
-            case TydomSwitch():
-                LOGGER.debug("Create plug %s", device.device_id)
-                ha_device = HaSwitch(device, self._hass)
-=======
             case TydomScene():
                 LOGGER.debug("Create scene %s", device.device_id)
                 ha_device = HAScene(device, self._hass)
@@ -419,24 +396,12 @@ class Hub:
             case TydomPlug():
                 LOGGER.debug("Create plug %s", device.device_id)
                 ha_device = HaPlug(device, self._hass)
->>>>>>> 64a9dbc881ebe1299fe5b794bd1de2ebfe34685c
                 self.ha_devices[device.device_id] = ha_device
                 if self.add_switch_callback is not None:
                     self.add_switch_callback([ha_device])
 
                 if self.add_sensor_callback is not None:
                     self.add_sensor_callback(ha_device.get_sensors())
-<<<<<<< HEAD
-            case TydomRemote():
-                LOGGER.debug("Create remote %s", device.device_id)
-                ha_device = HaRemote(device, self._hass)
-                self.ha_devices[device.device_id] = ha_device
-                if self.add_sensor_callback is not None:
-                    self.add_sensor_callback([ha_device])
-
-                if self.add_sensor_callback is not None:
-                    self.add_sensor_callback(ha_device.get_sensors())
-=======
             case TydomDevice():
                 LOGGER.debug("Create generic sensor %s", device.device_id)
                 ha_device = HASensor(device, self._hass)
@@ -470,7 +435,6 @@ class Hub:
                         switch_device = HASwitch(device, self._hass)
                         if self.add_switch_callback is not None:
                             self.add_switch_callback([switch_device])
->>>>>>> 64a9dbc881ebe1299fe5b794bd1de2ebfe34685c
             case _:
                 LOGGER.error(
                     "unsupported device type (%s) %s for device %s",

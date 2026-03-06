@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-"""Platform for sensor integration."""
-=======
 """Platform for switch integration."""
->>>>>>> 64a9dbc881ebe1299fe5b794bd1de2ebfe34685c
 
 from __future__ import annotations
 
@@ -18,10 +14,6 @@ async def async_setup_entry(
     config_entry: ConfigEntry,
     async_add_entities: AddEntitiesCallback,
 ) -> None:
-<<<<<<< HEAD
-    """Add cover for passed config_entry in HA."""
-=======
     """Add switches for passed config_entry in HA."""
->>>>>>> 64a9dbc881ebe1299fe5b794bd1de2ebfe34685c
     hub = hass.data[DOMAIN][config_entry.entry_id]
     hub.add_switch_callback = async_add_entities
