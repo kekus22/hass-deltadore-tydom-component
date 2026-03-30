@@ -188,7 +188,7 @@ class TydomBoiler(TydomDevice):
         """Set hvac mode (ANTI_FROST/NORMAL/STOP)."""
         LOGGER.debug("setting hvac mode to %s", mode)
         if mode == "ANTI_FROST":
-            if hasattr(self, "hvacMode"):
+            if hasattr(self, "locaMode"):
                 await self._tydom_client.put_devices_data(
                     self._id, self._endpoint, "setpoint", None
                 )
@@ -196,7 +196,7 @@ class TydomBoiler(TydomDevice):
                     self._id, self._endpoint, "thermicLevel", "STOP"
                 )
                 await self._tydom_client.put_devices_data(
-                    self._id, self._endpoint, "hvacMode", "ANTI_FROST"
+                    self._id, self._endpoint, "locaMode", "ANTI_FROST"
                 )
                 await self._tydom_client.put_devices_data(
                     self._id, self._endpoint, "antifrostOn", True
@@ -214,8 +214,8 @@ class TydomBoiler(TydomDevice):
                     self._id, self._endpoint, "comfortMode", "HEATING"
                 )
         elif mode == "NORMAL":
-            if hasattr(self, "hvacMode"):
-                hvac_mode = getattr(self, "hvacMode", None)
+            if hasattr(self, "locaMode"):
+                hvac_mode = getattr(self, "locaMode", None)
                 if hvac_mode == "ANTI_FROST":
                     await self._tydom_client.put_data("/home/absence", "to", 0)
                     await self._tydom_client.put_data("/events/home/absence", "to", 0)
@@ -223,7 +223,7 @@ class TydomBoiler(TydomDevice):
                         "/events/home/absence", "actions", "in"
                     )
                 await self._tydom_client.put_devices_data(
-                    self._id, self._endpoint, "hvacMode", "NORMAL"
+                    self._id, self._endpoint, "locaMode", "NORMAL"
                 )
                 await self._tydom_client.put_devices_data(
                     self._id, self._endpoint, "authorization", "HEATING"
@@ -258,9 +258,9 @@ class TydomBoiler(TydomDevice):
                     )
 
         elif mode == "STOP":
-            if hasattr(self, "hvacMode"):
+            if hasattr(self, "locaMode"):
                 await self._tydom_client.put_devices_data(
-                    self._id, self._endpoint, "hvacMode", "STOP"
+                    self._id, self._endpoint, "locaMode", "STOP"
                 )
                 await self._tydom_client.put_devices_data(
                     self._id, self._endpoint, "authorization", "STOP"
@@ -289,6 +289,9 @@ class TydomBoiler(TydomDevice):
         """Set target temperature."""
         await self._tydom_client.put_devices_data(
             self._id, self._endpoint, "setpoint", temperature
+        )
+        await self._tydom_client.put_devices_data(
+            self._id, self._endpoint, "overrideSetpoint", temperature
         )
 
 
@@ -596,19 +599,3 @@ class TydomScene(TydomDevice):
         # Scenarios are activated via PUT /scenarios/{id}
         scene_id = getattr(self, "scene_id", None) or self._id
         await self._tydom_client.activate_scenario(scene_id)
-
-
-class TydomPlug(TydomDevice):
-    """Represents a switch."""
-
-    async def turn_on(self) -> None:
-        """Tell switch to go down."""
-        await self._tydom_client.put_devices_data(
-            self._id, self._endpoint, "plugCmd", "ON"
-        )
-
-    async def turn_off(self) -> None:
-        """Tell switch to go up."""
-        await self._tydom_client.put_devices_data(
-            self._id, self._endpoint, "plugCmd", "OFF"
-        )
